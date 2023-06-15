@@ -15,7 +15,6 @@ body{
     gap: 1vw;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
     background-color: rgb(10, 204, 204);
 }
@@ -33,7 +32,8 @@ body{
 .calculator{
     background-color: rgb(36, 35, 35);
     height: fit-content;
-    width: 50vw;
+    width: 40vw;
+    height: 80vh;
     min-width: 400px;
     max-width: 450px;
     margin: 2vw;
@@ -63,7 +63,8 @@ body{
     flex-flow: row nowrap;
     justify-content: space-around;
     align-items: center;
-    gap: 10px;
+    gap: 2vw;
+    flex-grow: 1;
 }
 
 .key{
@@ -75,7 +76,7 @@ body{
     height: 70px;
     font-size: 1.3rem;
     border-radius: 10px;
-    width: 100px;
+    width: 80px;
     box-shadow: 5px 5px rgb(0, 0, 0);
     transition-duration: 100ms;
     flex-grow: 1;
