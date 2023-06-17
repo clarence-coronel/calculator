@@ -36,19 +36,19 @@ numbers.forEach((num) =>{
 });
 
 plus.addEventListener('click', ()=>{
-    update('+');
+    update(' + ');
 });
 
 minus.addEventListener('click', ()=>{
-    update('-');
+    update(' - ');
 });
 
 multiply.addEventListener('click', ()=>{
-    update('*');
+    update(' * ');
 });
 
 divide.addEventListener('click', ()=>{
-    update('/');
+    update(' / ');
 });
 
 point.addEventListener('click', ()=> {
@@ -60,28 +60,33 @@ percent.addEventListener('click', ()=> {
 });
 
 clear.addEventListener('click', ()=> {
-    // equationContent = [];
+     equationContent = [];
      equation.innerHTML = "";
      result.innerHTML = "";
      display = "";
 })
 
 dlt.addEventListener('click', ()=> {
-    equationContent.pop();
-    display = display.replace(display[display.length-1], "");
+    if(display[display.length-1] == ' '){
+        display = display.slice(0, display.length-3);
+    }
+    else{
+        display = display.slice(0, display.length-1);
+    }
     equation.innerHTML = display;
+});
+
+equal.addEventListener('click', ()=>{
+    equationContent = display.split(' ');
+    console.table(equationContent);
 });
 
 function update(char){
     
     display+=char;
 
-    // display = display.replace(',', '');
-    // display = display.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                        // .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        // .replace(/B(?=(d{3})+(?!d))/g, ','))
-
-    console.log(display)
+    //  display = display.replace(',', '');
+    //  display = display.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     equation.innerHTML = display;
     
 }
