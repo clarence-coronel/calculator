@@ -34,7 +34,7 @@ body{
     background-color: rgb(36, 35, 35);
     height: fit-content;
     width: 400px;
-    margin: 0 2vw;
+    margin: 2vw;
     border-radius: 15px;
     display: flex;
     flex-flow: column;
