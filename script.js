@@ -73,6 +73,16 @@ dlt.addEventListener('click', ()=> {
 });
 
 function update(char){
+    
     display+=char;
+
+    // display = display.replace(',', '');
+    // display = display.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        // .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        // .replace(/B(?=(d{3})+(?!d))/g, ','))
+
+    console.log(display)
     equation.innerHTML = display;
+    
 }
+
