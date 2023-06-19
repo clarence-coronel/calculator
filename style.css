@@ -16,19 +16,36 @@ body{
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: rgb(10, 204, 204);
+    background-color: rgb(17, 182, 160);
     padding: 5vw;
 }
 
 .rights{
     font-size: 1rem;
-    text-shadow: 2px 2px 3px rgba(70, 68, 68, 0.473);
+    color: rgb(255, 255, 255);
+    /* text-shadow: 2px 2px 3px rgb(247, 247, 247); */
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none
 }
 .name{
-    color: white;
+    display: flex;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    /* text-shadow: 2px 2px 3px rgb(70, 68, 68); */
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
+    gap: 10px;  
+}
+
+img{
+    width: 30px;
+    transition-duration: 3000ms;
 }
 
 .calculator{

@@ -11,6 +11,7 @@ const equation = document.querySelector("#equation");
 const result = document.querySelector("#result");
 const numbers = document.querySelectorAll('.key--num');
 const zero = document.querySelector('#zero');
+const img = document.querySelector('.image');
 
 let zeroIsOn = true;
 let display = "";
@@ -18,7 +19,25 @@ let equationContent = [];
 let pointIsAvail = true;
 let answerAvail = false;
 let answer = null;
+let isNotRotated = false;
+let rotation = 360;
 
+window.addEventListener('load', ()=>{
+    spin();
+    setInterval(spin,3000);
+});
+
+function spin(){
+    // if(isNotRotated){
+    //     img.style.transform = 'rotate(0)';
+    //     isNotRotated = false;
+    // }
+    // else if(!isNotRotated){
+        img.style.transform = `rotate(${rotation}deg`;
+        isNotRotated = true;
+        rotation += 360;
+    //}
+}
 
 numbers.forEach((num) =>{
     num.addEventListener('click', () => {
