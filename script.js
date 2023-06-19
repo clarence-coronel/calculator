@@ -45,6 +45,15 @@ numbers.forEach((num) =>{
 });
 
 zero.addEventListener('click', () => {
+    if(answerAvail){
+            display = "";
+            equationContent = [];
+            pointIsAvail = true;
+            answerAvail = false;
+            answer = null;
+            result.innerHTML = ""
+            equation.style.color = 'black';
+        }
     if(display[display.length-1] != '%'){
         update(zero.innerHTML);
     }
@@ -370,8 +379,28 @@ function solve(arr){
 
 window.addEventListener('keydown', (e) => {
     if(e.key == '0'){
+        if(answerAvail){
+            display = "";
+            equationContent = [];
+            pointIsAvail = true;
+            answerAvail = false;
+            answer = null;
+            result.innerHTML = ""
+            equation.style.color = 'black';
+        }
+
         if(display[display.length-1] != '%'){
+            document.getElementById('zero').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('zero').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300);
             update(zero.innerHTML);
+        }
+        else{
+            document.getElementById('zero').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('zero').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
         }
     }
     else if(e.key == '1'){
