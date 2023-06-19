@@ -21,6 +21,11 @@ let answerAvail = false;
 let answer = null;
 let isNotRotated = false;
 
+// test = [0, ' ', 1];
+
+// console.table(test.filter((e)=>{
+//     if(e != ' ') return true;
+// }));
 
 window.addEventListener('load', ()=>{
     spin();
@@ -235,6 +240,7 @@ clear.addEventListener('click', ()=> {
      display = "";
      answer = 0;
      pointIsAvail = true;
+     equation.style.color = 'black';
 })
 
 dlt.addEventListener('click', ()=> {
@@ -302,6 +308,7 @@ function solve(arr){
                 // num /= 100;
                 temp[i] = parseFloat(temp[i]);
                 temp[i] /= 100;
+                temp[i] = temp[i].toString();
                 }
             }
     
@@ -317,8 +324,8 @@ function solve(arr){
                         if(secondNum == 0){
                             answer = 'null';
                             answerAvail = false;
-                            return 'What you doing bro?';
-                            
+                            equation.style.color = 'black';
+                            return 'What you doing bro?';                            
                         }
                         ans = firstNum / secondNum;
                     }
@@ -350,7 +357,6 @@ function solve(arr){
             if(temp.length > 1){
                 temp = temp.filter((item)=>{
                     if(item != ' ')return true;
-                    
                 });
             }
             for(i = 0; i<temp.length; i++){
@@ -363,6 +369,7 @@ function solve(arr){
                         ans = firstNum + secondNum;
                     }
                     else if(operation == '-'){
+                        
                         ans = firstNum - secondNum;
                     }
 
