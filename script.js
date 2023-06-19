@@ -1,15 +1,3 @@
-// TODO
-// *Ang ginagawa ni percent is kino-convert yung preceding whole number 
-// into decimal by dividing it to 100
-
-// *Make sure na di nakakapag input if yung preceeding 
-// value sa string is operator tas operator din yung idagdag
-// same with point and percent
-
-// *if nag input pa ng operator sa dulo si user maliban sa percent is dapat iignore pag kinclick yung equal
-
-// *iko-convert yung string na display into array pag hiwahiwalayin yung dapat pag hiwahiwalayin
-
 const plus = document.querySelector("#plus");
 const minus = document.querySelector("#minus");
 const multiply = document.querySelector("#multiply");
@@ -25,14 +13,25 @@ const numbers = document.querySelectorAll('.key--num');
 const zero = document.querySelector('#zero');
 
 let zeroIsOn = true;
-let tempNumber = "";
 let display = "";
 let equationContent = [];
 let pointIsAvail = true;
+let answerAvail = false;
+let answer = null;
 
 
 numbers.forEach((num) =>{
     num.addEventListener('click', () => {
+        if(answerAvail){
+            display = "";
+            equationContent = [];
+            pointIsAvail = true;
+            answerAvail = false;
+            answer = null;
+            result.innerHTML = ""
+            equation.style.color = 'black';
+        }
+        
         if(display[display.length-1] != '%'){
             update(num.innerHTML);
         }
@@ -46,7 +45,7 @@ numbers.forEach((num) =>{
 });
 
 zero.addEventListener('click', () => {
-    if(display.length != 0 && display[display.length-1] != ' '){
+    if(display[display.length-1] != '%'){
         update(zero.innerHTML);
     }
     else{
@@ -58,6 +57,16 @@ zero.addEventListener('click', () => {
 });
 
 plus.addEventListener('click', ()=>{
+    if(answerAvail){
+        result.innerHTML = "";
+        equation.innerHTML = "";
+        display = "";
+        equation.style.color = 'black';
+        update(answer);
+        answer = null;
+        answerAvail = false;
+    }
+
     if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
         update(' + ');
         pointIsAvail = true;
@@ -71,6 +80,17 @@ plus.addEventListener('click', ()=>{
 });
 
 minus.addEventListener('click', ()=>{
+
+    if(answerAvail){
+        result.innerHTML = "";
+        equation.innerHTML = "";
+        display = "";
+        equation.style.color = 'black';
+        update(answer);
+        answer = null;
+        answerAvail = false;
+    }
+
     if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
         update(' - ');
         pointIsAvail = true;
@@ -84,6 +104,17 @@ minus.addEventListener('click', ()=>{
 });
 
 multiply.addEventListener('click', ()=>{
+
+    if(answerAvail){
+        result.innerHTML = "";
+        equation.innerHTML = "";
+        display = "";
+        equation.style.color = 'black';
+        update(answer);
+        answer = null;
+        answerAvail = false;
+    }
+
     if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
         update(' * ');
         pointIsAvail = true;
@@ -97,6 +128,17 @@ multiply.addEventListener('click', ()=>{
 });
 
 divide.addEventListener('click', ()=>{
+
+    if(answerAvail){
+        result.innerHTML = "";
+        equation.innerHTML = "";
+        display = "";
+        equation.style.color = 'black';
+        update(answer);
+        answer = null;
+        answerAvail = false;
+    }
+
     if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
         update(' / ');
         pointIsAvail = true;
@@ -118,16 +160,35 @@ point.addEventListener('click', ()=> {
         }, 300)
         return;
     };
-    if(display[display.length-1] == ' ' || display.length == 0){
-        update('0');
+
+    if(display[display.length-1] == '%'){
+        point.style.backgroundColor = 'rgb(224, 72, 61)';
+        setTimeout(()=>{
+            point.style.backgroundColor = 'rgb(80, 81, 82)';
+        }, 300)
+        return;
     }
 
+    if(display.length == 0 || display[display.length-1] == " " ){
+        update('0');
+    }
+    
     update(point.innerHTML);
     pointIsAvail = false;
     
 });
 
 percent.addEventListener('click', ()=> {
+    if(answerAvail){
+        result.innerHTML = "";
+        equation.innerHTML = "";
+        display = "";
+        equation.style.color = 'black';
+        update(answer);
+        answer = null;
+        answerAvail = false;
+    }
+    
     if(display[display.length-1] != ' ' && display[display.length-1] != '%' && display.length != 0 && display[display.length-1] != '.'){
         update('%');
     }
@@ -144,10 +205,20 @@ clear.addEventListener('click', ()=> {
      equation.innerHTML = "";
      result.innerHTML = "";
      display = "";
+     answer = 0;
      pointIsAvail = true;
 })
 
 dlt.addEventListener('click', ()=> {
+
+    if(answer != 0){
+        equationContent = [];
+        equation.innerHTML = "";
+        result.innerHTML = "";
+        display = "";
+        answer = 0;
+        pointIsAvail = true;
+    }
 
     if(display[display.length-1] == '.' && display[display.length-2] == '0'){
         display = display.slice(0, display.length-2);
@@ -163,17 +234,389 @@ dlt.addEventListener('click', ()=> {
 });
 
 equal.addEventListener('click', ()=>{
-    equationContent = display.split(' ');
+    equationContent = display.split(' ');  
+
     console.table(equationContent);
+
+    answer = solve(equationContent);
+    equation.style.color = 'rgb(80, 81, 82)'
+    result.innerHTML = answer;
 });
 
 function update(char){
-    
     display+=char;
 
     //  display = display.replace(',', '');
     //  display = display.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     equation.innerHTML = display;
     
+}
+
+function solve(arr){
+    //operations = ['%', '*/', '+', '-'];
+    temp = arr;
+    isNotClear = true;
+
+    if(temp[temp.length-1] == '+' || temp[temp.length-1] == '-' || temp[temp.length-1] == '*' || temp[temp.length-1] == '/' || temp[temp.length-1] == '.'){
+        equationContent.pop();
+    }
+    
+    while(isNotClear){ //palitan ng condition na hanggat merong multiplication and division uulitin to??
+        for(i = 0; i < temp.length; i++){
+            // Turns all % into decimals
+            for(j = 0; j < temp[i].length; j++){
+                if(temp[i][j] == '%'){
+                // num = '';
+                // for(k = 0; k < temp[i].length-1; k++){
+                //     num += temp[i][k];
+                // }
+                // num = parseInt(num);
+                // num /= 100;
+                temp[i] = parseFloat(temp[i]);
+                temp[i] /= 100;
+                }
+            }
+    
+            if(temp[i] == '*' || temp[i] == '/'){
+                    firstNum = parseFloat(temp[i-1]);
+                    secondNum = parseFloat(temp[i+1]);
+                    operation = temp[i];
+                    ans = 0;
+                    if(operation == '*'){
+                        ans = firstNum * secondNum;
+                    }
+                    else if(operation == '/'){
+                        if(secondNum == 0){
+                            answer = 'null';
+                            answerAvail = false;
+                            return 'What you doing bro?';
+                            
+                        }
+                        ans = firstNum / secondNum;
+                    }
+
+                    ansFix = ans.toFixed(2);
+                    finalAns = ans;
+                    if(ansFix[ansFix.length-1] != '0' && ansFix[ansFix.length-2] != '0'){
+                        finalAns = ansFix;
+                        pointIsAvail = false;
+                    }
+
+                    temp[i] = finalAns;
+                    temp[i-1] = ' ';
+                    temp[i+1] = ' ';
+                    break;
+            }
+        }
+        
+        for(n = 0; n < temp.length; n++){
+            if(temp[n] == '*' || temp[n] == '/') isNotClear = true;
+            else{
+                isNotClear = false;
+            }
+        }
+    }
+
+    if(temp.length != 1){
+        while(true){
+            if(temp.length > 1){
+                temp = temp.filter((item)=>{
+                    if(item != ' ')return true;
+                    
+                });
+            }
+            for(i = 0; i<temp.length; i++){
+                if(temp[i] == '+' || temp[i] == '-'){
+                    firstNum = parseFloat(temp[i-1]);
+                    secondNum = parseFloat(temp[i+1]);
+                    operation = temp[i];
+                    ans = 0;
+                    if(operation == '+'){
+                        ans = firstNum + secondNum;
+                    }
+                    else if(operation == '-'){
+                        ans = firstNum - secondNum;
+                    }
+
+                    ansFix = ans.toFixed(2);
+                    finalAns = ans;
+                    
+                    if(ansFix[ansFix.length-1] != '0' && ansFix[ansFix.length-2] != '0'){
+                        finalAns = ansFix;
+                    }
+                    
+                    if((finalAns - Math.floor(n)) !== 0) pointIsAvail = false;
+        
+                    temp[i] = finalAns;
+                    temp[i-1] = ' ';
+                    temp[i+1] = ' ';
+
+                    break;
+            }
+            }
+
+            if(temp.length == 0){
+                temp.push(0);
+            }
+
+            if(temp.length == 1) {
+                break;
+            }
+        }
+    }
+    answerAvail = true;
+    return temp;
+}
+
+window.addEventListener('keydown', (e) => {
+    if(e.key == '0'){
+        if(display[display.length-1] != '%'){
+            update(zero.innerHTML);
+        }
+    }
+    else if(e.key == '1'){
+        numInput('1', 'one');
+    }
+    else if(e.key == '2'){
+        numInput('2', 'two');
+    }
+    else if(e.key == '3'){
+        numInput('3', 'three');
+    }
+    else if(e.key == '4'){
+        numInput('4', 'four');
+    }
+    else if(e.key == '5'){
+        numInput('5', 'five');
+    }
+    else if(e.key == '6'){
+        numInput('6', 'six');
+    }
+    else if(e.key == '7'){
+        numInput('7', 'seven');
+    }
+    else if(e.key == '8'){
+        numInput('8', 'eight');
+    }
+    else if(e.key == '9'){
+        numInput('9', 'nine');
+    }
+    else if(e.key == "Backspace"){
+        if(answer != null){
+            equationContent = [];
+            equation.innerHTML = "";
+            result.innerHTML = "";
+            display = "";
+            answer = 0;
+            pointIsAvail = true;
+        }
+    
+        if(display[display.length-1] == '.' && display[display.length-2] == '0'){
+            display = display.slice(0, display.length-2);
+        }
+    
+        if(display[display.length-1] == ' '){
+            display = display.slice(0, display.length-3);
+        }
+        else{
+            display = display.slice(0, display.length-1);
+        }
+        equation.innerHTML = display;
+    }
+    else if(e.key == '+'){
+        if(answerAvail){
+            result.innerHTML = "";
+            equation.innerHTML = "";
+            display = "";
+            equation.style.color = 'black';
+            update(answer);
+            answer = null;
+            answerAvail = false;
+        }
+    
+        if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
+            update(' + ');
+            document.getElementById('plus').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('plus').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            pointIsAvail = true;
+        }
+        else{
+            document.getElementById('plus').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('plus').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+        }
+    }
+    else if(e.key == '-'){
+        if(answerAvail){
+            result.innerHTML = "";
+            equation.innerHTML = "";
+            display = "";
+            equation.style.color = 'black';
+            update(answer);
+            answer = null;
+            answerAvail = false;
+        }
+    
+        if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
+            update(' - ');
+            document.getElementById('minus').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('minus').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            pointIsAvail = true;
+        }
+        else{
+            document.getElementById('minus').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('minus').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+        }
+    }
+    else if(e.key == '*'){
+        if(answerAvail){
+            result.innerHTML = "";
+            equation.innerHTML = "";
+            display = "";
+            equation.style.color = 'black';
+            update(answer);
+            answer = null;
+            answerAvail = false;
+        }
+        if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
+            update(' * ');
+            document.getElementById('multiply').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('multiply').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            pointIsAvail = true;
+        }
+        else{
+            document.getElementById('multiply').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('multiply').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+        }
+    }
+    else if(e.key == '/'){
+        if(answerAvail){
+            result.innerHTML = "";
+            equation.innerHTML = "";
+            display = "";
+            equation.style.color = 'black';
+            update(answer);
+            answer = null;
+            answerAvail = false;
+        }
+        if(display[display.length-1] != ' ' && display[display.length-1] != '.' && display.length != 0){
+            update(' / ');
+            document.getElementById('divide').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('divide').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            pointIsAvail = true;
+        }
+        else{
+            document.getElementById('divide').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('divide').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+        }
+    }
+    else if(e.key == '.'){
+        if(!pointIsAvail) {
+            document.getElementById('point').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('point').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            return;
+        };
+    
+        if(display[display.length-1] == '%'){
+            document.getElementById('point').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('point').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            return;
+        }
+    
+        if(display.length == 0 || display[display.length-1] == " " ){
+            update('0');
+        }
+        
+        document.getElementById('point').style.backgroundColor = 'rgb(126, 124, 124)';
+        setTimeout(()=>{
+            document.getElementById('point').style.backgroundColor = 'rgb(80, 81, 82)';
+        }, 300)
+        update('.');
+        pointIsAvail = false;
+    }
+    else if(e.key == '%'){
+        if(answerAvail){
+            result.innerHTML = "";
+            equation.innerHTML = "";
+            display = "";
+            equation.style.color = 'black';
+            update(answer);
+            answer = null;
+            answerAvail = false;
+        }
+        
+        if(display[display.length-1] != ' ' && display[display.length-1] != '%' && display.length != 0 && display[display.length-1] != '.'){
+            document.getElementById('point').style.backgroundColor = 'rgb(126, 124, 124)';
+            setTimeout(()=>{
+                document.getElementById('point').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+            update('%');
+        }
+        else{
+            document.getElementById('percent').style.backgroundColor = 'rgb(224, 72, 61)';
+            setTimeout(()=>{
+                document.getElementById('percent').style.backgroundColor = 'rgb(80, 81, 82)';
+            }, 300)
+        }
+    }
+    else if(e.key == 'Enter'){
+        equationContent = display.split(' ');  
+        answer = solve(equationContent);
+        equation.style.color = 'rgb(80, 81, 82)'
+        result.innerHTML = answer;
+
+        document.getElementById('equal').style.backgroundColor = 'rgb(6, 216, 41)';
+            setTimeout(()=>{
+                document.getElementById('equal').style.backgroundColor = 'rgb(6, 190, 36)';
+            }, 300)
+    }
+})
+
+function numInput(input, name){
+    if(answerAvail){
+        display = "";
+        equationContent = [];
+        pointIsAvail = true;
+        answerAvail = false;
+        answer = null;
+        result.innerHTML = ""
+        equation.style.color = 'black';
+    }
+    
+    if(display[display.length-1] != '%'){
+        update(input);
+        document.getElementById(name).style.backgroundColor = 'rgb(126, 124, 124)';
+        setTimeout(()=>{
+            document.getElementById(name).style.backgroundColor = 'rgb(80, 81, 82)';
+        }, 300)
+        return;
+    }
+
+    else{
+        document.getElementById(name).style.backgroundColor = 'rgb(224, 72, 61)';
+        setTimeout(()=>{
+            document.getElementById(name).style.backgroundColor = 'rgb(80, 81, 82)';
+        }, 300)
+        return;
+    }
 }
 

@@ -21,7 +21,8 @@ body{
 }
 
 .rights{
-    font-size: 0.7rem;
+    font-size: 1rem;
+    text-shadow: 2px 2px 3px rgba(70, 68, 68, 0.473);
 }
 .name{
     color: white;
@@ -34,7 +35,7 @@ body{
     background-color: rgb(36, 35, 35);
     height: fit-content;
     width: 400px;
-    margin: 2vw;
+    margin: 2vw 2vw 0 2vw;
     border-radius: 15px;
     display: flex;
     flex-flow: column;
@@ -75,8 +76,11 @@ body{
 }
 
 .result{
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 600;
+    overflow-wrap: break-word;
+    width: 100%;
+    text-align: right;
 /* 
     font-family: 'Courier New', Courier, monospace; */
 }
