@@ -20,23 +20,23 @@ let pointIsAvail = true;
 let answerAvail = false;
 let answer = null;
 let isNotRotated = false;
-let rotation = 360;
+
 
 window.addEventListener('load', ()=>{
     spin();
-    setInterval(spin,3000);
+    setInterval(spin,4000);
 });
 
 function spin(){
-    // if(isNotRotated){
-    //     img.style.transform = 'rotate(0)';
-    //     isNotRotated = false;
-    // }
-    // else if(!isNotRotated){
-        img.style.transform = `rotate(${rotation}deg`;
+    if(isNotRotated){
+        img.style.transform = 'rotate(0)';
+        isNotRotated = false;
+    }
+    else if(!isNotRotated){
+        img.style.transform = `rotate(360deg)`;
         isNotRotated = true;
-        rotation += 360;
-    //}
+        
+    }
 }
 
 numbers.forEach((num) =>{
