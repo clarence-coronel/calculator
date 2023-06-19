@@ -421,6 +421,12 @@ window.addEventListener('keydown', (e) => {
         else{
             display = display.slice(0, display.length-1);
         }
+
+        document.getElementById('delete').style.backgroundColor = 'rgb(126, 124, 124)';
+        setTimeout(()=>{
+            document.getElementById('delete').style.backgroundColor = 'rgb(80, 81, 82)';
+        }, 300);
+
         equation.innerHTML = display;
     }
     else if(e.key == '+'){
