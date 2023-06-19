@@ -24,7 +24,7 @@ body{
     font-size: 1rem;
     color: rgb(255, 255, 255);
     /* text-shadow: 2px 2px 3px rgb(247, 247, 247); */
-    height: 60px;
+    height: fit-content;
 
     display: flex;
     align-items: center;
