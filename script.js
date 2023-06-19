@@ -21,12 +21,6 @@ let answerAvail = false;
 let answer = null;
 let isNotRotated = false;
 
-// test = [0, ' ', 1];
-
-// console.table(test.filter((e)=>{
-//     if(e != ' ') return true;
-// }));
-
 window.addEventListener('load', ()=>{
     spin();
     setInterval(spin,4000);
@@ -266,15 +260,13 @@ dlt.addEventListener('click', ()=> {
     }
     equation.innerHTML = display;
 });
-
+    //  display = display.replace(',', '');
+    //  display = display.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 equal.addEventListener('click', ()=>{
     equationContent = display.split(' ');  
-
-    console.table(equationContent);
-
     answer = solve(equationContent);
     equation.style.color = 'rgb(80, 81, 82)'
-    result.innerHTML = answer;
+    result.innerHTML = answer[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 });
 
 function update(char){
@@ -290,7 +282,7 @@ function solve(arr){
     //operations = ['%', '*/', '+', '-'];
     temp = arr;
     isNotClear = true;
-
+    counter = -0;
     if(temp[temp.length-1] == '+' || temp[temp.length-1] == '-' || temp[temp.length-1] == '*' || temp[temp.length-1] == '/' || temp[temp.length-1] == '.'){
         equationContent.pop();
     }
@@ -306,13 +298,13 @@ function solve(arr){
                 // }
                 // num = parseInt(num);
                 // num /= 100;
-                temp[i] = parseFloat(temp[i]);
+                temp[i] = parseFloat(temp[i]).toString();;
                 temp[i] /= 100;
                 temp[i] = temp[i].toString();
                 }
             }
-    
             if(temp[i] == '*' || temp[i] == '/'){
+
                     firstNum = parseFloat(temp[i-1]);
                     secondNum = parseFloat(temp[i+1]);
                     operation = temp[i];
@@ -336,19 +328,26 @@ function solve(arr){
                         finalAns = ansFix;
                         pointIsAvail = false;
                     }
-
                     temp[i] = finalAns;
                     temp[i-1] = ' ';
                     temp[i+1] = ' ';
+                    temp = temp.filter((item)=>{
+                        if(item != ' ') return true;
+                    });
                     break;
             }
         }
         
+        matchFound = 0;
+
         for(n = 0; n < temp.length; n++){
-            if(temp[n] == '*' || temp[n] == '/') isNotClear = true;
-            else{
-                isNotClear = false;
+            if(temp[n] == '*' || temp[n] == '/') {
+                matchFound++;
             }
+        }
+
+        if(matchFound == 0){
+            isNotClear = false;
         }
     }
 
@@ -643,7 +642,7 @@ window.addEventListener('keydown', (e) => {
         equationContent = display.split(' ');  
         answer = solve(equationContent);
         equation.style.color = 'rgb(80, 81, 82)'
-        result.innerHTML = answer;
+        result.innerHTML = answer[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
         document.getElementById('equal').style.backgroundColor = 'rgb(6, 216, 41)';
             setTimeout(()=>{
