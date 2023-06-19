@@ -33,6 +33,7 @@ body{
     user-select: none;
     width: 100vw;
     justify-content: center;
+    min-width: 400px;
 }
 
 .name{
