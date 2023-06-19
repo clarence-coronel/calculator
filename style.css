@@ -25,23 +25,28 @@ body{
     color: rgb(255, 255, 255);
     /* text-shadow: 2px 2px 3px rgb(247, 247, 247); */
     height: fit-content;
-
     display: flex;
+    flex-flow: nowrap;
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    user-select: none
+    user-select: none;
+    width: 100vw;
+    justify-content: center;
 }
 
 .name{
+    width: 100%;
     display: flex;
     align-items: center;
+    flex-flow: nowrap;
+    justify-content: center;
     color: rgb(0, 0, 0);
     /* text-shadow: 2px 2px 3px rgb(70, 68, 68); */
-    font-weight: 700;
     cursor: pointer;
     text-decoration: none;
     gap: 10px;  
+    font-size: 1rem;
 }
 
 a:hover{
