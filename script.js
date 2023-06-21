@@ -317,7 +317,11 @@ function solve(arr){
                             answer = 'null';
                             answerAvail = false;
                             equation.style.color = 'black';
-                            return 'What you doing bro?';                            
+
+                            result.innerHTML = 'What you doing bro?';
+                            equation.innerHTML = '';
+
+                            return [];                            
                         }
                         ans = firstNum / secondNum;
                     }
